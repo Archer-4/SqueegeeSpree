@@ -46,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
         android:layout_marginLeft="176dp"
-        android:layout_marginTop="138dp"
         android:layout_marginEnd="177dp"
         android:layout_marginRight="177dp"
         android:layout_marginBottom="144dp"
@@ -54,5 +53,6 @@
         app:layout_constraintBottom_toTopOf="@+id/AccelRead"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.813" />
 </androidx.constraintlayout.widget.ConstraintLayout>

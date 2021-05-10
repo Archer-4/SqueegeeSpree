@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/backGroundBlue">
+    android:background="@color/backGroundBlue"
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="631dp"
         android:layout_height="478dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        android:scaleType="fitCenter"
+        android:translationY="-70dp"
+        app:layout_constraintBottom_toBottomOf="@id/upGradeMenu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.69"
@@ -29,15 +31,15 @@
         android:layout_marginEnd="151dp"
         android:layout_marginRight="151dp"
         android:layout_marginBottom="440dp"
-        android:text="@string/play_game"
         android:backgroundTint="@color/foreGroundOrange"
+        android:text="@string/play_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/upGradeMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="154dp"
@@ -46,15 +48,15 @@
         android:layout_marginEnd="154dp"
         android:layout_marginRight="154dp"
         android:layout_marginBottom="368dp"
-        android:text="@string/upgradesMenu"
         android:backgroundTint="@color/foreGroundOrange"
+        android:text="@string/upgradesMenu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playButton" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/statisticsMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="151dp"
@@ -63,11 +65,11 @@
         android:layout_marginEnd="151dp"
         android:layout_marginRight="151dp"
         android:layout_marginBottom="299dp"
-        android:text="@string/statsMenu"
         android:backgroundTint="@color/foreGroundOrange"
+        android:text="@string/statsMenu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@id/upGradeMenu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
