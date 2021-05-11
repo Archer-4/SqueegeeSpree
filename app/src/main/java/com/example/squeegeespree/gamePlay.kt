@@ -62,8 +62,8 @@ class gamePlay : AppCompatActivity(), SensorEventListener {
                 vSizeOld=vSize
                 */
 
-                if (event.values[0] > 0) xVal = -1
-                else xVal = 1
+                if (event.values[0] > 0) xVal = 1
+                else xVal = -1
                 if (event.values[1] > 0) yVal = -1
                 else yVal = 1
                 gLView.upDate(xVal, yVal)
@@ -124,16 +124,16 @@ class MyGLRenderer : GLSurfaceView.Renderer {
     }
     override fun onDrawFrame(unused: GL10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
-        //Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, -3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
-        //Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
-        mySquare.draw()
+        Matrix.setLookAtM(viewMatrix, 0, 0f, 0f, -3f, 0f, 0f, 0f, 0f, 1.0f, 0.0f)
+        Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0)
+        mySquare.draw(vPMatrix)
     }
 
     override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
         GLES20.glViewport(0, 0, width, height)
         val ratio: Float = width.toFloat() / height.toFloat()
 
-        //Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 3f, 7f)
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1f, 1f, 3f, 7f)
     }
 
     fun loadShader(type: Int, shaderCode: String): Int {
@@ -173,7 +173,7 @@ class Square {
                 }
 
             }
-    private val vertexShaderCode = "attribute vec4 vPosition;" + "void main() {" + " gl_Position =vPosition;" + "}"
+    private val vertexShaderCode = "uniform mat4 uMVPMatrix;"+"attribute vec4 vPosition;" + "void main() {" + " gl_Position = vPosition*uMVPMatrix;" + "}"
     private val fragmentShaderCode = "precision mediump float;" + "uniform vec4 vColor;" + "void main() {" + " gl_FragColor = vColor;" + "}"
     private var mProgram:Int
 
@@ -198,13 +198,13 @@ class Square {
     private val vertexStride: Int = 12
     private var vPMatrixHandle: Int = 0
 
-    fun draw() {
+    fun draw(mvpMatrix:FloatArray) {
         GLES20.glUseProgram(mProgram)
 
         positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition").also {
-            GLES20.glEnableVertexAttribArray(it)
+            GLES20.glEnableVertexAttribArray(positionHandle)
             GLES20.glVertexAttribPointer(
-                    it,
+                    positionHandle,
                     3,
                     GLES20.GL_FLOAT,
                     false,
@@ -214,24 +214,25 @@ class Square {
             mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor").also { colorHandle->
                 GLES20.glUniform4fv(colorHandle, 1, color, 0)
             }
-            //vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrx")
-            //GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, mvpMatrix, 0)
+            vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix")
+            GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, mvpMatrix, 0)
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 4)
-            GLES20.glDisableVertexAttribArray(it)
+            GLES20.glDisableVertexAttribArray(positionHandle)
 
         }
     }
     fun upDatePos(x:Int, y:Int) {
+        val constant: Float = 0.1f
         Log.i("SquareUpdate", "Square Update Function running")
-        squareCoords[0] = squareCoords[0]+(x*.01f)
+        squareCoords[0] = squareCoords[0]+(x*constant)
         Log.i("SquareUpdate", squareCoords[0].toString())
-        squareCoords[1] = squareCoords[1]+(y*.01f)
-        squareCoords[3] = squareCoords[3]+(x*.01f)
-        squareCoords[4] = squareCoords[4]+(y*.01f)
-        squareCoords[6] = squareCoords[6]+(x*.01f)
-        squareCoords[7] = squareCoords[7]+(y*.01f)
-        squareCoords[9] = squareCoords[9]+(x*.01f)
-        squareCoords[10] = squareCoords[10]+(y*.01f)
+        squareCoords[1] = squareCoords[1]+(y*constant)
+        squareCoords[3] = squareCoords[3]+(x*constant)
+        squareCoords[4] = squareCoords[4]+(y*constant)
+        squareCoords[6] = squareCoords[6]+(x*constant)
+        squareCoords[7] = squareCoords[7]+(y*constant)
+        squareCoords[9] = squareCoords[9]+(x*constant)
+        squareCoords[10] = squareCoords[10]+(y*constant)
         vertexBuffer = ByteBuffer.allocateDirect(squareCoords.size * 4).run{
             order(ByteOrder.nativeOrder())
             asFloatBuffer().apply{
